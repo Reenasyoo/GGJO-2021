@@ -4,4 +4,5 @@
 public class CharacterSettings : ScriptableObject
 {
     public float MovementSpeed = 10f;
+    public float JumpHeight = 10f;
 }
