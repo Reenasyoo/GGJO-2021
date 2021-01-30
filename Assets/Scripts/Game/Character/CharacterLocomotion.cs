@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,7 +55,7 @@ public class CharacterLocomotion : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        inputVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+        inputVelocity = new Vector3(Input.GetAxis(VARS.HORIZONTAL_STRING), 0, Input.GetAxis(VARS.VERTICAL_STRING)).normalized;
         
         grounded = CheckGrounded();
 
@@ -77,7 +78,12 @@ public class CharacterLocomotion : MonoBehaviour
         var mass = _rigidbody.mass;
         _rigidbody.AddForce(Physics.gravity * mass);
     }
-    
+
+    private void Update()
+    {
+        container.AnimationController.SetForwardVelocity(inputVelocity.x);
+    }
+
     private bool CheckGrounded() // TODO: Should be in collisions controller
     {
         grounded = false;

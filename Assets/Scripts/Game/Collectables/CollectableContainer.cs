@@ -6,14 +6,19 @@ public class CollectableContainer : MonoBehaviour
 {
     #region Propeties
 
-    public CollectableCollisionController CollisionController => collisionController;
+    public InteractableCollisionController CollisionController => collisionController;
 
     #endregion
 
     #region Fields
 
-    [SerializeField] private CollectableCollisionController collisionController = null;
+    [SerializeField] private InteractableCollisionController collisionController = null;
 
     #endregion
-    
+
+    // When collectable picked up destroy object that is in scene
+    public void DestroyCollectable()
+    {
+        Destroy(this.gameObject);
+    }
 }

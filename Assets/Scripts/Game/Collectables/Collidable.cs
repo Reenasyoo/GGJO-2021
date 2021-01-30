@@ -26,5 +26,6 @@ public enum CollisionType
     DEFAULT = 0,
     COLLECTABLE = 1,
     INTERACTABLE = 2,
-    PLAYER = 3
+    PLAYER = 3,
+    COLLECTABLE_PLACE = 4
 }

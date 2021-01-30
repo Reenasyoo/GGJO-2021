@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class CharacterContainer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region Properties
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public CharacterLocomotion Locomotion => locomotion;
+    public CharacterActionController ActionController => actionController;
+    public CharacterCollisionController CollisionController => collisionController;
+    public CharacterAnimationController AnimationController => animationController;
+
+    #endregion
+
+    #region Fields
+    
+    [SerializeField] private CharacterLocomotion locomotion = null;
+    [SerializeField] private CharacterActionController actionController = null;
+    [SerializeField] private CharacterCollisionController collisionController = null;
+    [SerializeField] private CharacterAnimationController animationController = null;
+    
+    #endregion
 }
