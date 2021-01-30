@@ -13,6 +13,10 @@ public class CharacterLocomotion : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
     
     
+    [SerializeField] private float rotationSpeed = 2f;
+    // [SerializeField] private float characterFolowRotationDeadzone = 0.1f;
+    
+    
     private readonly Vector3 gravity = Physics.gravity;
     private Vector3 inputVelocity = default;
     private Vector3 targetVelocity = default;
@@ -26,6 +30,7 @@ public class CharacterLocomotion : MonoBehaviour
     private bool canJump = true;
 
     private Vector3 spherePositon = default;
+    private Transform mainCamera = null;
     
     #endregion
     
@@ -49,7 +54,7 @@ public class CharacterLocomotion : MonoBehaviour
         _rigidbody.angularDrag = 999;
         _rigidbody.drag = 0;
 
-        // velocity = _rigidbody.velocity;
+        mainCamera = CameraController.Instance.CameraTransform;
     }
 
     // Update is called once per frame
@@ -81,7 +86,9 @@ public class CharacterLocomotion : MonoBehaviour
 
     private void Update()
     {
-        container.AnimationController.SetForwardVelocity(inputVelocity.x);
+        RotateCharacterFowardToCamera();
+        
+        container.AnimationController.SetForwardVelocity(inputVelocity.z);
     }
 
     private bool CheckGrounded() // TODO: Should be in collisions controller
@@ -106,4 +113,58 @@ public class CharacterLocomotion : MonoBehaviour
     {
         return Mathf.Sqrt(-1 * settings.JumpHeight * gravity.y / _rigidbody.mass); // TODO: Add rounder
     }
+    
+    private void RotateCharacterFowardToCamera()
+    {
+        // // TODO: Add switch for different rotation sizes
+        var distance = 0f;
+        var direction = 0;
+        var rotation = transform.rotation;
+        var cameraRotation = mainCamera.rotation;
+
+
+        if (!myApproximation(rotation.y, cameraRotation.y, 0.1f))
+        {
+            if (rotation.y > cameraRotation.y)
+            {
+                distance = rotation.y - cameraRotation.y;
+                direction = 0;
+            
+            }
+            else if ( rotation.y < cameraRotation.y)
+            {
+            
+                distance = cameraRotation.y - rotation.y;
+                direction = 2;
+            }
+        }
+        else
+        {
+            
+            direction = 1;
+        }
+            
+
+        // If current camera distane is less than deadzone exit method
+        // if (!(distance > characterFolowRotationDeadzone)) return;
+            
+        var rotationTarget =
+            Quaternion.Lerp(rotation, cameraRotation, Time.deltaTime * rotationSpeed);
+                
+        // Remove x and z rotations so character would only rotate in one axes
+        rotationTarget.x = 0;
+        rotationTarget.z = 0;
+                
+        // Apply modified rotation
+        transform.rotation = rotationTarget;
+            
+        // Set rotation animation state
+        // container.AnimationController.SetCharacterRotationY(direction);
+    }
+    
+    private bool myApproximation(float a, float b, float tolerance)
+    {
+        return (Mathf.Abs(a - b) < tolerance);
+    }
+    
 }

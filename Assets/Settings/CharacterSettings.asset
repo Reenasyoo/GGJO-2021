@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf28b00625f84d6880bc66567210d78, type: 3}
   m_Name: CharacterSettings
   m_EditorClassIdentifier: 
-  MovementSpeed: 5
+  MovementSpeed: 2
   JumpHeight: 200
