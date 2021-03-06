@@ -99,6 +99,7 @@ MonoBehaviour:
   container: {fileID: 2275430104531244027}
   settings: {fileID: 11400000, guid: e4787f25156794c0193568da6fb34c40, type: 2}
   _rigidbody: {fileID: 2275430104531244026}
+  rotationSpeed: 2
   grounded: 0
   HeightToGround: 0.5
 --- !u!114 &2620758303383121832
@@ -136,6 +137,7 @@ MonoBehaviour:
   onHidePopupInfo: {fileID: 11400000, guid: e90cde8c736a34dc78bf4d92387879f2, type: 2}
   onSetCollectableText: {fileID: 11400000, guid: 02b6419a4afeb4dc28324c0560321a71,
     type: 2}
+  onSetPlaceText: {fileID: 11400000, guid: e8c6992caa4314981a1f3c2609bcfdd6, type: 2}
 --- !u!1 &4258378023705232445
 GameObject:
   m_ObjectHideFlags: 0

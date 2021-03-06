@@ -5,9 +5,13 @@ using TMPro;
 
 public class GameCanvasController : MonoBehaviour
 {
+    public TextMeshProUGUI PopupInfoText => popupInfoText;
+    
+    
     [SerializeField] private TextMeshProUGUI popupInfoText = null;
 
-    private readonly string collectString = "Press E to collect the item";
+    private const string CollectString = "Press E to collect the item";
+    private const string PlaceString = "Press E to place object";
 
     private void SetPopupInfoText(string value)
     {
@@ -21,7 +25,13 @@ public class GameCanvasController : MonoBehaviour
 
     public void SetCollectableText()
     {
-        SetPopupInfoText(collectString);
+        SetPopupInfoText(CollectString);
+    }
+
+    public void ShowPlaceText()
+    {
+        ShowHidePopupInfo(true);
+        SetPopupInfoText(PlaceString);
     }
     
 }

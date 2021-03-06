@@ -52,13 +52,27 @@ public class CameraController : MonoBehaviour
         
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, interactableButtonLayer))
         {
-            if(Input.GetMouseButtonDown(0))
-                print(hit.collider.name);
+            if (Input.GetMouseButtonDown(0) && GameManager.Instance.CanPress)
+            {
+                print("wusup");
+                var button = hit.collider.gameObject.GetComponent<InteractableButtonController>();
+                
+                GameManager.Instance.PuzzleButtonPressed = button.buttonIndex;
+                GameManager.Instance.CheckPressedButton();
+            }
+                
         }
     }
 
-    private void SetPlayerCamera()
+    public void SetPlayerCamera()
     {
-        // brain.ActiveVirtualCamera = playerCamera;
+        playerCamera.gameObject.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    
+    public void SetFocus()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        playerCamera.gameObject.SetActive(false);
     }
 }

@@ -7,6 +7,8 @@ public class CharacterCollisionController : Collidable
 {
     #region Properties
 
+    public GameEvent OnHidePopupInfo => onHidePopupInfo;
+
     public GameObject CurrentCollectable { get; private set; } = null;
     public InteractablePlaceholder CollectablePlace { get; private set; } = null;
     public bool CanPlace { get; private set; } = false;
@@ -22,6 +24,7 @@ public class CharacterCollisionController : Collidable
     [SerializeField] private GameEvent onShowPopupInfo = null;
     [SerializeField] private GameEvent onHidePopupInfo = null;
     [SerializeField] private GameEvent onSetCollectableText = null;
+    [SerializeField] private GameEvent onSetPlaceText = null;
 
     #endregion
     
@@ -43,16 +46,17 @@ public class CharacterCollisionController : Collidable
         if (CheckCollisionType(other) == CollisionType.COLLECTABLE_PLACE)
         {
             var interactablePlaceholder = other.gameObject.GetComponent<InteractablePlaceholder>();
-            var holderIndex = interactablePlaceholder.placeholderIndex;
-            if (container.ActionController.CycleInventory(holderIndex))
+            if (!interactablePlaceholder.IsPlaced())
             {
-                print("got place");
-                CanPlace = true;
-                // PlaceToSet = container.ActionController.ReturnPlace(holderIndex);
-                CollectablePlace = interactablePlaceholder;
+                var holderIndex = interactablePlaceholder.placeholderIndex;
+                if (container.ActionController.CycleInventory(holderIndex))
+                {
+                    print("got place");
+                    CanPlace = true;
+                    CollectablePlace = interactablePlaceholder;
+                    onSetPlaceText.Raise();
+                }
             }
-            
-                
         }
     }
 
@@ -64,14 +68,19 @@ public class CharacterCollisionController : Collidable
             if (CurrentCollectable != null)
             {
                 CurrentCollectable = null;
+                if(onHidePopupInfo != null) onHidePopupInfo.Raise();
             }
+        }
 
-            RemoveCurrentCollectable();
+        if (CheckCollisionType(other) == CollisionType.COLLECTABLE_PLACE)
+        {
+            if(onHidePopupInfo != null) onHidePopupInfo.Raise();
         }
     }
 
     public void RemoveCurrentCollectable()
     {
+        CurrentCollectable.SetActive(false);
         CurrentCollectable = null;
         if(onHidePopupInfo != null) onHidePopupInfo.Raise();
     }

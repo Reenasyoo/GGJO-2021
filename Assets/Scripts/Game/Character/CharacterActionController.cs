@@ -36,6 +36,7 @@ public class CharacterActionController : MonoBehaviour
 
             if (container.CollisionController.CanPlace)
             {
+                container.CollisionController.OnHidePopupInfo.Raise();
                 container.CollisionController.CollectablePlace.EnableMesh();
             }
         }
@@ -44,13 +45,12 @@ public class CharacterActionController : MonoBehaviour
     public void PickupCollectable()
     {
         var copy = Instantiate(container.CollisionController.CurrentCollectable, inventory.transform, true);
-        copy.AddComponent<Interactable>();
         copy.SetActive(false);
         
         var tempInteractable = copy.GetComponent<Interactable>();
         collectableList.Add(tempInteractable);
         container.CollisionController.RemoveCurrentCollectable();
-        OnCollectablePickup?.Raise();
+        // OnCollectablePickup?.Raise();
     }
 
     public bool CycleInventory(int value)
